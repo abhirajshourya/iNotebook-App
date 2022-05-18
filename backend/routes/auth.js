@@ -92,6 +92,7 @@ router.post('/login', [
         res.json({ authToken: authToken })
     }
     catch (error) {
+        console.log(error)
         res.status(500).send("Interal Server Error!")
     }
 })

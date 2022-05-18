@@ -10,8 +10,8 @@ router.get('/fetchallnotes', fetchUser, async (req, res) => {
     res.json(allFetchedNotes);
 })
 
-//ROUTE 2: Add new notes GET "api/notes/addnote"
-router.get('/addnote', fetchUser, [
+//ROUTE 2: Add new notes PUT "api/notes/addnote"
+router.put('/addnote', fetchUser, [
     // title must be an atleast 3 chars long
     body('title', 'Enter a valid Title!').isLength({ min: 3 }),
     // description must be at least 5 chars long
