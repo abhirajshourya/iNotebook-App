@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import noteContext from '../context/notes/noteContext'
+import AddNote from './AddNote'
+import { useNavigate } from 'react-router-dom'
 import NoteItem from './NoteItem'
 
 export default function Notes(props) {
@@ -8,8 +10,14 @@ export default function Notes(props) {
     const { notes, fetchNotes, editNote } = context
     const ref = useRef(null)
     const refClose = useRef(null)
+    const navigate = useNavigate()
     useEffect(() => {
-        fetchNotes()
+        if(localStorage.getItem('token')){
+            fetchNotes()
+        }
+        else{
+            navigate('/login')
+        }
     }, [])
     const updateNote = (currentNote) => {
         ref.current.click()
@@ -26,6 +34,7 @@ export default function Notes(props) {
 
     return (
         <>
+        <AddNote alertMaker={props.alertMaker}/>
             <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Modal
             </button>

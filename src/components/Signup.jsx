@@ -27,7 +27,7 @@ export default function Signup(props) {
 
         if (json.success) {
             localStorage.setItem('token', json.authToken)
-            navigate("/")
+            navigate("/login")
             props.alertMaker("Signup Successfull!", "success")
         }
         else {
@@ -53,7 +53,7 @@ export default function Signup(props) {
                 <label htmlFor="confPassword" className="form-label">Confirm Password</label>
                 <input type="confPassword" className="form-control" value={credentials.confPassword} onChange={onChange} id="confPassword" name="confPassword" />
             </div>
-            <button type="submit" className="btn btn-primary" >Submit</button>
+            <button type="submit" className="btn btn-info" >Submit</button>
         </form>
     )
 }

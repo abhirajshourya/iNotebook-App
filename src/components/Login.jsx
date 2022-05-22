@@ -23,7 +23,6 @@ export default function Login(props) {
         })
 
         const json = await response.json()
-        console.log(json)
 
         if(json.success){
             //Save auth-token and redirect
@@ -45,7 +44,7 @@ export default function Login(props) {
                 <label htmlFor="password" className="form-label">Password</label>
                 <input type="password" className="form-control" value={credentials.password} onChange={onChange} id="password" name="password" />
             </div>
-            <button type="submit" className="btn btn-primary" >Submit</button>
+            <button type="submit" className="btn btn-info" >Submit</button>
         </form>
     )
 }

@@ -24,7 +24,7 @@ export default function App() {
     <>
       <NoteState>
         <Router>
-          <Navbar />
+          <Navbar alertMaker={alertMaker}/>
           <Alert alert={alert}/>
           <div className="container">
             <Routes>
