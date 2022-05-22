@@ -17,10 +17,12 @@ router.post('/signup', [
     // password must be at least 5 chars long
     body('password', 'Enter a password atleast 5 characters long!').isLength({ min: 5 }),
 ], async (req, res) => {
+    let success = false;
+
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success, errors: errors.array() });
     }
 
     // Check user with this email exists already and/or create a new user
@@ -30,6 +32,7 @@ router.post('/signup', [
         //check user exist
         if (user) {
             return res.status(400).json({
+                success,
                 error: "user already exists!"
             })
         }
@@ -52,10 +55,11 @@ router.post('/signup', [
         const authToken = await jwt.sign({ user: user.id }, JWT_SECRET);
 
         //send authToken as a response
-        res.json({ authToken: authToken })
+        success = true;
+        res.json({ success, authToken: authToken })
     }
     catch (error) {
-        res.status(500).send("Interal Server Error!")
+        res.status(500).send(success, "Interal Server Error!")
     }
 })
 
@@ -67,6 +71,7 @@ router.post('/login', [
     // password must be at least 5 chars long
     body('password', 'Enter a password atleast 5 characters long!').isLength({ min: 5 })
 ], async (req, res) => {
+    let success = false;
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -77,19 +82,20 @@ router.post('/login', [
     try {
         let user = await users.findOne({ email })
         if (!user) {
-            return res.status(400).json({ error: "try again with correct credentials" })
+            return res.status(400).json({ success, error: "try again with correct credentials" })
         }
 
         const passwordCompare = await bcrypt.compare(password, user.password)
         if (!passwordCompare) {
-            return res.status(400).json({ error: "try again with correct credentials" })
+            return res.status(400).json({ success, error: "try again with correct credentials" })
         }
 
         //jwt authentication
         const authToken = await jwt.sign({ user: user.id }, JWT_SECRET);
 
         //send authToken as a response
-        res.json({ authToken: authToken })
+        success = true;
+        res.json({ success, authToken: authToken })
     }
     catch (error) {
         console.log(error)
@@ -99,17 +105,19 @@ router.post('/login', [
 
 //ROUTE 3: Get logged in user details using POST "/api/auth/getuser". Login Required
 router.post('/getuser', fetchUser, async (req, res) => {
+    let success = false;
+    
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success, errors: errors.array() });
     }
     try {
         const user = await users.findById(req.userid).select("-password")
         res.status(200).send(user)
     }
     catch (error) {
-        res.status(500).send("Interal Server Error!")
+        res.status(500).send(success, "Interal Server Error!")
     }
 })
 module.exports = router;
