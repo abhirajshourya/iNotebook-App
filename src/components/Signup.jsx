@@ -36,7 +36,7 @@ export default function Signup(props) {
 
     }
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form onSubmit={handleOnSubmit} className="m-5">
             <div className="mb-3">
                 <label htmlFor="name" className="form-label">Full Name</label>
                 <input type="name" className="form-control" value={credentials.name} onChange={onChange} id="name" name="name" aria-describedby="emailHelp" />
